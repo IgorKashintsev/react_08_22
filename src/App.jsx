@@ -16,17 +16,21 @@ export const App = () => {
   const [obj, setObj] = useState(getInitObj());
   const unique_id = uuid();
 
-
-  const sayHi = () => {
-    if (messageList.length <= 0) {
-      return;
-    }
-    let last = messageList[messageList.length - 1]
-    console.log('Hello', last.author, ', how can I help you?');
+  const addMessageBot = (obj) => {
+    setValue((prevMessageList) => [...prevMessageList, obj])
   };
 
   useEffect(() => {
-    setTimeout(sayHi, 1500)
+    const last = messageList[messageList.length - 1];
+    if (messageList.length > 0 && last.author !== 'BOT') {
+      const timeout = setTimeout(() => {addMessageBot({
+        author: 'BOT',
+        text: `Hello ${last.author}, how can I help you?`,
+      })
+     }, 1500);
+
+     return () => clearTimeout(timeout);
+    }
   }, [messageList]);
 
   return (
@@ -37,8 +41,7 @@ export const App = () => {
         unique_id={unique_id}
         setObjMes={setObj}
         setValueMes={setValue}
-        getInitObjMes={getInitObj}
-        />
+        getInitObjMes={getInitObj}/>
     </div>
   );
 }
