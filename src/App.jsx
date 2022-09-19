@@ -1,12 +1,11 @@
 import {useState, useEffect} from 'react';
 import {Message} from './components/Message/Message';
-import { v4 as uuid } from 'uuid';
+import {Form} from './components/Form/Form';
 
 
 export const App = () => {
   const getInitObj = () => {
     return {
-      id: unique_id,
       author: '',
       text: '',
     };
@@ -14,7 +13,6 @@ export const App = () => {
 
   const [messageList, setValue] = useState([]);
   const [obj, setObj] = useState(getInitObj());
-  const unique_id = uuid();
 
   const addMessageBot = (obj) => {
     setValue((prevMessageList) => [...prevMessageList, obj])
@@ -35,13 +33,16 @@ export const App = () => {
 
   return (
     <div className="Form">
-      <Message 
+      <Form
         messageList={messageList}
         obj={obj}
-        unique_id={unique_id}
         setObjMes={setObj}
         setValueMes={setValue}
-        getInitObjMes={getInitObj}/>
+        getInitObjMes={getInitObj}
+      />
+      <Message 
+        messageList={messageList}
+      />
     </div>
   );
 }
