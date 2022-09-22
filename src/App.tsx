@@ -1,21 +1,19 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, FC} from 'react';
 import {Message} from './components/Message/Message';
 import {Form} from './components/Form/Form';
+import {Chatlist} from './components/Chatlist/Chatlist';
+import { Messages, NewMessage } from './types';
+
+interface MessageProps {
+  messageList: Messages;
+}
 
 
-export const App = () => {
-  const getInitObj = () => {
-    return {
-      author: '',
-      text: '',
-    };
-  };
+export const App: FC<MessageProps> = () => {
+  const [messageList, addMessage] = useState<Messages>([]);
 
-  const [messageList, setValue] = useState([]);
-  const [obj, setObj] = useState(getInitObj());
-
-  const addMessageBot = (obj) => {
-    setValue((prevMessageList) => [...prevMessageList, obj])
+  const addMessageBot = (obj: NewMessage) => {
+    addMessage((prevMessageList) => [...prevMessageList, obj])
   };
 
   useEffect(() => {
@@ -35,14 +33,12 @@ export const App = () => {
     <div className="Form">
       <Form
         messageList={messageList}
-        obj={obj}
-        setObjMes={setObj}
-        setValueMes={setValue}
-        getInitObjMes={getInitObj}
+        addMessage={addMessage}
       />
+      <Chatlist />
       <Message 
         messageList={messageList}
       />
     </div>
   );
-}
+};
