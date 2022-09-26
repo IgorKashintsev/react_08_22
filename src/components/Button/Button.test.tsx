@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 
 describe('Button', () => {
   it('render component', () => {
-    render(<Button label="test"/>);
+    render(<Button>test</Button>);
     screen.debug();
   });
 
@@ -16,7 +16,7 @@ describe('Button', () => {
   // });
 
   it('render component with test', () => {
-    render(<Button label="test"/>);
+    render(<Button>test</Button>);
 
     expect(screen.getByText(/test/)).toBeInTheDocument();
   });
@@ -24,8 +24,8 @@ describe('Button', () => {
   it('render multiply components', () => {
     render(
       <>
-        <Button label="test1"/>
-        <Button label="test2"/>
+        <Button>test1</Button>
+        <Button>test2</Button>
       </>
     );
     screen.debug();
@@ -34,7 +34,7 @@ describe('Button', () => {
   });
 
   it('button is disabled', () => {
-    render(<Button label="test" disabled />);
+    render(<Button disabled>test</Button>);
 
     expect(screen.getByText(/test/)).toBeDisabled();
   });
@@ -49,7 +49,7 @@ describe('Button', () => {
 
   it('button click with userEvent', async () => {
     const mockHandler = jest.fn();
-    render(<Button label="test" click={mockHandler} />);
+    render(<Button click={mockHandler}>test</Button>);
 
     await userEvent.click(screen.getByText(/test/));
 
@@ -58,7 +58,7 @@ describe('Button', () => {
 
   it('button click with userEvent', async () => {
     const mockHandler = jest.fn();
-    render(<Button label="test" click={() => setTimeout(mockHandler, 900)} />);
+    render(<Button click={() => setTimeout(mockHandler, 900)}>test</Button>);
 
     await userEvent.click(screen.getByText(/test/));
 
@@ -67,7 +67,7 @@ describe('Button', () => {
 
   it('button click with userEvent', async () => {
     const mockHandler = jest.fn();
-    render(<Button label="test" click={() => setTimeout(mockHandler, 1500)} />);
+    render(<Button click={() => setTimeout(mockHandler, 1500)}>test</Button>);
 
     await userEvent.click(screen.getByText(/test/));
 
