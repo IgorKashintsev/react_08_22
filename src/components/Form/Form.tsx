@@ -1,42 +1,51 @@
-import {ChangeEvent, FC, useState} from 'react';
+import { ChangeEvent, FC, memo, useState } from 'react';
 import TextField from '@mui/material/TextField';
-import {Button} from '../Button/Button';
-import { Messages } from 'src/types';
+import { Button } from '../Button/Button';
+import { Message } from 'src/types';
+import { useParams } from 'react-router-dom';
 
 interface FormProps {
-  addMessage: any;
-  messageList: Messages;
+  addMessage: (chatId: string, msg: Message) => void;
 }
 
-export const Form: FC<FormProps> = ({messageList, addMessage}) => {
-  const getInitObj = () => {
+export const Form: FC<FormProps> = memo(({addMessage}) => {
+  const clearInput = () => {
     return {
       author: '',
       text: '',
     };
   };
 
-  const [obj, setObj] = useState(getInitObj());
-  const change = (prop: string, event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setObj({...obj, [prop]: event.target.value});
+  const [newMessage, setMessage] = useState(clearInput());
+  const {chatId} = useParams();
+
+  const change = (prop: string, 
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setMessage({...newMessage, [prop]: event.target.value});
   };
 
   const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    addMessage([...messageList, obj]);
-    setObj(getInitObj());
+    if(chatId) {
+      addMessage(chatId, {
+        author: newMessage.author,
+        text: newMessage.text,
+      });
+    }
+    setMessage(clearInput());
   };
 
   return (<>
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} role="form">
         <TextField
           sx={{width: 400}}
-          style={{marginBottom: '25px'}}
-          value={obj.author}
+          style={{marginBottom: '25px', marginTop: '25px'}}
+          value={newMessage.author}
           onChange={event => change('author', event)}
           label="Enter your name"
           variant="outlined"
           autoFocus
+          inputProps={{'data-testid': 'input'}}
         />
         <br />
         <TextField
@@ -45,12 +54,16 @@ export const Form: FC<FormProps> = ({messageList, addMessage}) => {
           label="Enter your message"
           multiline
           rows={4}
-          value={obj.text}
+          value={newMessage.text}
           onChange={event => change('text', event)}
+          inputProps={{'data-testid': 'textarea'}}
         />
         <br />
-        <Button label='Send' disabled={!(obj.text && obj.author)} />
+        <Button 
+          disabled={!(newMessage.text && newMessage.author)}
+          >Send
+        </Button>
     </form>
   </>
   );
-};
+});

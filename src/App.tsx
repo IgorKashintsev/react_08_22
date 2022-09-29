@@ -1,44 +1,74 @@
-import {useState, useEffect, FC} from 'react';
-import {Message} from './components/Message/Message';
-import {Form} from './components/Form/Form';
-import {Chatlist} from './components/Chatlist/Chatlist';
-import { Messages, NewMessage } from './types';
+import { useState, FC } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { Main } from './pages/Main';
+import { Profile } from './pages/Profile';
+import { Chatlist } from './components/Chatlist/Chatlist';
+import { Chat, Message, Messages } from './types';
+import { ChatPage } from './pages/ChatPage';
+import { Header } from './components/Header';
 
-interface MessageProps {
-  messageList: Messages;
-}
+const defaultChats: Chat[] = [
+  {
+    id: '1',
+    name: 'first',
+  },
+  {
+    id: '2',
+    name: 'second',
+  }
+];
 
+const defaultMessages: Messages = {
+  '1': [{author: 'User', text: 'Hello World'}],
+  '2': [{author: 'Bot', text: 'Hello, I am BOT'}],
+};
 
-export const App: FC<MessageProps> = () => {
-  const [messageList, addMessage] = useState<Messages>([]);
+export const App: FC = () => {
+  const [chats, setChats] = useState<Chat[]>(defaultChats);
+  const [messageList, setMessages] = useState<Messages>(defaultMessages);
 
-  const addMessageBot = (obj: NewMessage) => {
-    addMessage((prevMessageList) => [...prevMessageList, obj])
+  const onAddChat = (newChat: Chat) => {
+    setChats([...chats, newChat]);
+    setMessages({...messageList, [newChat.id]: [],});
   };
 
-  useEffect(() => {
-    const last = messageList[messageList.length - 1];
-    if (messageList.length > 0 && last.author !== 'BOT') {
-      const timeout = setTimeout(() => {addMessageBot({
-        author: 'BOT',
-        text: `Hello ${last.author}, how can I help you?`,
-      })
-     }, 1500);
+  const onDeleteChat = (chatId: string) => {
+    setChats(chats.filter((item) => item.id != chatId));
+    delete messageList[chatId];
+  }
 
-     return () => clearTimeout(timeout);
-    }
-  }, [messageList]);
+  const onAddMessage = (chatId: string, newMessage: Message) => {
+    setMessages({
+      ...messageList,
+      [chatId]: [...messageList[chatId], newMessage],
+    });
+  };
 
   return (
-    <div className="Form">
-      <Form
-        messageList={messageList}
-        addMessage={addMessage}
-      />
-      <Chatlist />
-      <Message 
-        messageList={messageList}
-      />
-    </div>
-  );
+    <Routes>
+      <Route path="/" element={<Header/>}>
+        <Route index element={<Main/>}/>
+        <Route path="profile" element={<Profile/>}/>
+        <Route path="chats">
+          <Route 
+            index element={<Chatlist chats={chats} 
+              onDeleteChat={onDeleteChat}
+              onAddChat={onAddChat}/>
+            }
+          />
+          <Route 
+            path=":chatId" 
+            element={<ChatPage chats={chats} 
+              onAddChat={onAddChat} 
+              messageList={messageList} 
+              onAddMessage={onAddMessage}
+              onDeleteChat={onDeleteChat}
+            />
+            }
+          />
+        </Route>
+      </Route>
+      <Route path="*" element={<div>404 Page</div>}/>
+    </Routes>
+  )
 };
