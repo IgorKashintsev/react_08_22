@@ -1,44 +1,54 @@
-// import {useState, useEffect, FC} from 'react';
-// import {MessageList} from './components/Message/MessageList';
-// import {Form} from './components/Form/Form';
-// import {Chatlist} from './components/Chatlist/Chatlist';
-// import { Messages, Message } from './types';
+import { useEffect, FC } from 'react';
+import { Navigate, useParams } from 'react-router-dom';
+import { Chatlist } from '../components/Chatlist/Chatlist';
+import { Form } from '../components/Form/Form';
+import { MessageList } from '../components/Message/MessageList';
+import { Chat, Message, Messages } from 'src/types';
 
-// interface MessageProps {
-//   messageList: Messages;
-// }
+interface ChatPageProps {
+  chats: Chat[];
+  onAddChat: (newChat: Chat) => void;
+  messageList: Messages;
+  onAddMessage: (chatId: string, msg: Message) => void;
+  onDeleteChat: (chatId: string) => void;
+}
 
+export const ChatPage: FC<ChatPageProps> = ({
+    chats, 
+    onAddChat, 
+    onAddMessage, 
+    messageList,
+    onDeleteChat,
+  }) => {
+  const {chatId} = useParams();
 
-// export const App: FC<MessageProps> = () => {
-//   const [messageList, addMessage] = useState<Messages>([]);
+  useEffect(() => {
+    if (chatId === undefined) {
+      return
+    } else if (messageList[chatId] === undefined) {
+      return
+    }
+    const last = messageList[chatId][messageList[chatId].length - 1];
+    if (chatId && messageList[chatId].length > 0 && last.author !== 'BOT') {
+      const timeout = setTimeout(() => {onAddMessage(chatId, {
+        author: 'BOT',
+        text: `Hello ${last.author}, how can I help you?`,
+      });
+     }, 1500);
 
-//   const addMessageBot = (newMessage: Message) => {
-//     addMessage((prevMessageList) => [...prevMessageList, newMessage])
-//   };
+     return () => clearTimeout(timeout);
+    }
+  }, [chatId, messageList, onAddMessage]);
 
-//   useEffect(() => {
-//     const last = messageList[messageList.length - 1];
-//     if (messageList.length > 0 && last.author !== 'BOT') {
-//       const timeout = setTimeout(() => {addMessageBot({
-//         author: 'BOT',
-//         text: `Hello ${last.author}, how can I help you?`,
-//       })
-//      }, 1500);
+  if (chatId && !messageList[chatId]) {
+    return <Navigate to="/chats" replace />
+  }
 
-//      return () => clearTimeout(timeout);
-//     }
-//   }, [messageList]);
-
-//   return (
-//     <div className="Form">
-//       <Form
-//         messageList={messageList}
-//         addMessage={addMessage}
-//       />
-//       <Chatlist />
-//       <MessageList
-//         messageList={messageList}
-//       />
-//     </div>
-//   );
-// };
+  return (
+    <>
+      <Chatlist chats={chats} onAddChat={onAddChat} onDeleteChat={onDeleteChat}/>
+      <Form addMessage={onAddMessage} />
+      <MessageList messageList={chatId ? messageList[chatId] : []}/>
+    </>
+  );
+};

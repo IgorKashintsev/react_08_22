@@ -1,4 +1,4 @@
-import { Key } from "react";
+
 
 export interface Message {
   author: string;
@@ -8,6 +8,6 @@ export interface Message {
 export type Messages = Record<string, Message[]>;
 
 export interface Chat {
-  id: Key;
+  id: string;
   name: String;
 };
