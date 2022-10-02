@@ -10,6 +10,7 @@
     "@testing-library/react": "^13.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
     "uuidv4": "^6.2.13",
     "web-vitals": "^2.1.4"
@@ -55,7 +56,6 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
     "mini-css-extract-plugin": "^2.6.1",
-    "react-router-dom": "^6.4.1",
     "sass": "^1.54.8",
     "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",
