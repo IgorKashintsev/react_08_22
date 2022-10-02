@@ -12,7 +12,7 @@
       ],
       "svg/*": [
         "./src/assets/svg/*"
-      ],
+      ]
     },
     /* Projects */
     // "incremental": true,                              /* Save .tsbuildinfo files to allow for incremental compilation of projects. */
