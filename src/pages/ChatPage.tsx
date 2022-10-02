@@ -38,6 +38,7 @@ export const ChatPage: FC<ChatPageProps> = ({
 
      return () => clearTimeout(timeout);
     }
+    
   }, [chatId, messageList, onAddMessage]);
 
   if (chatId && !messageList[chatId]) {
