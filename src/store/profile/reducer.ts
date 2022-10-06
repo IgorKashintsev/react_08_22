@@ -22,13 +22,13 @@ export const profileReducer: Reducer<ProfileState, ProfileActions> = (
         return {
           ...state,
           visible: !state.visible,
-        }
+        };
       }
       case CHANGE_NAME: {
         return {
           ...state,
           name: action.name,
-        }
+        };
       }
       default: return state;
     }

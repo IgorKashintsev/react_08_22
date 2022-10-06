@@ -16,7 +16,7 @@ const navigate = [
     name: 'Profile',
     path: '/profile',
   },
-]
+];
 
 export const Header: FC = () => {
   return (<>

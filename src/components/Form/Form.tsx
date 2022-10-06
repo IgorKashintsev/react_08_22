@@ -1,14 +1,11 @@
 import { ChangeEvent, FC, memo, useContext, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { Button } from '../Button/Button';
-import { Message } from 'src/types';
 import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addMessage } from '../../store/messages/actions';
 
-interface FormProps {
-  addMessage: (chatId: string, msg: Message) => void;
-}
-
-export const Form: FC<FormProps> = memo(({addMessage}) => {
+export const Form: FC = memo(() => {
   const clearInput = () => {
     return {
       author: '',
@@ -18,6 +15,7 @@ export const Form: FC<FormProps> = memo(({addMessage}) => {
 
   const [newMessage, setMessage] = useState(clearInput());
   const {chatId} = useParams();
+  const dispatch = useDispatch();
 
   const change = (prop: string, 
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -27,10 +25,12 @@ export const Form: FC<FormProps> = memo(({addMessage}) => {
   const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if(chatId) {
-      addMessage(chatId, {
-        author: newMessage.author,
-        text: newMessage.text,
-      });
+      dispatch(
+        addMessage(chatId, {
+          author: newMessage.author,
+          text: newMessage.text,
+        })
+      );
     }
     setMessage(clearInput());
   };
