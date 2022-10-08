@@ -1,33 +1,26 @@
-// import { render, screen, waitFor } from "@testing-library/react";
-// import "@testing-library/jest-dom";
-// import { ChatPage } from "./ChatPage";
-// import { Provider } from "react-redux";
-// import { store } from "../../src/store";
+import { render, screen, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { ChatPage } from "./ChatPage";
+import { Provider } from "react-redux";
+import { store } from "../../src/store";
+import { BrowserRouter } from "react-router-dom";
 
-// describe('ChatPage', () => {
+describe('ChatPage', () => {
 
-//   it('render ChatPage', () => {
+  it('render ChatPage', () => {
 
-//     render(
-//     <Provider store={store}>
-//       <ChatPage />
-//     </Provider>
-//     );
-//   });
+    render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <ChatPage />
+      </BrowserRouter>
+    </Provider>
+    );
+  });
 
-//   it('bot answer', () => {
+  it('bot answer', () => {
 
-//     // const messageList = {
-//     //   '1': [{author: 'User', text: 'Hello World'}],
-//     // };
-
-//     render(
-//       <Provider store={store}>
-//         <ChatPage />
-//       </Provider>
-//       );
-
-//     waitFor(() => expect(screen.getByText(/Hello User, how can I help you?/)
-//     ).toBeInTheDocument(), {timeout: 1600});
-//   });
-// });
+    waitFor(() => expect(screen.getByText(/Hello User, how can I help you?/)
+    ).toBeInTheDocument(), {timeout: 1600});
+  });
+});
