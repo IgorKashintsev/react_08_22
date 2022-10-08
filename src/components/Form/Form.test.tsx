@@ -2,6 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom"
 import userEvent from "@testing-library/user-event";
 import { Form } from "./Form";
+import { Provider } from "react-redux";
+import { store } from "../../store";
 
 describe('Form', () => {
   let addMessage: jest.Mock<any, any>;
@@ -9,7 +11,9 @@ describe('Form', () => {
     addMessage = jest.fn();
 
     render(
-        <Form addMessage={addMessage} />
+      <Provider store={store}>
+        <Form />
+      </Provider>
     );
   });
 

@@ -9,5 +9,5 @@ export type Messages = Record<string, Message[]>;
 
 export interface Chat {
   id: string;
-  name: String;
+  name: string;
 };

@@ -5,6 +5,7 @@ import { store } from "../store";
 import { Profile } from "./Profile";
 
 describe ('Profile', () => {
+  let changeName: jest.Mock<any, any>;
   it('render', () => {
     render(
       <Provider store={store}>
@@ -27,7 +28,7 @@ describe ('Profile', () => {
   });
 
   // it('button click with userEvent', async () => {
-  //   const changeName = jest.fn();
+  //   changeName = jest.fn();
   //   render(
   //     <Provider store={store}>
   //       <Profile />
