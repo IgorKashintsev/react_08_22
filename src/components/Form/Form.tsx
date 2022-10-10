@@ -1,9 +1,11 @@
-import { ChangeEvent, FC, memo, useContext, useState } from 'react';
+import { ChangeEvent, FC, memo, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { Button } from '../Button/Button';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { addMessage } from '../../store/messages/actions';
+import { addMessageWithReply } from '../../store/messages/slice';
+import { ThunkDispatch } from 'redux-thunk';
+import { StoreState } from '../../store';
 
 export const Form: FC = memo(() => {
   const clearInput = () => {
@@ -15,7 +17,7 @@ export const Form: FC = memo(() => {
 
   const [newMessage, setMessage] = useState(clearInput());
   const {chatId} = useParams();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<ThunkDispatch<StoreState, void, any>>();
 
   const change = (prop: string, 
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -26,9 +28,12 @@ export const Form: FC = memo(() => {
     ev.preventDefault();
     if(chatId) {
       dispatch(
-        addMessage(chatId, {
-          author: newMessage.author,
-          text: newMessage.text,
+        addMessageWithReply({
+          chatName: chatId,
+          message: {
+            author: newMessage.author,
+            text: newMessage.text,
+          },
         })
       );
     }

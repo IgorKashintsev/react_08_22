@@ -6,7 +6,7 @@ import MuiButton from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import style from "./Chatlist.module.scss";
 import { useDispatch, useSelector } from 'react-redux';
-import { addChat, deleteChat } from '../../store/messages/actions';
+import { addChat, deleteChat } from '../../store/messages/slice';
 import { selectChats } from '../../store/messages/selectors';
 
 export const Chatlist: FC = () => {
