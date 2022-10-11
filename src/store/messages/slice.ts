@@ -25,7 +25,7 @@ const messagesSlice = createSlice({
         id: uuidv4(),
         author,
         text,
-      })
+      });
     },
     deleteChat: (state, action: PayloadAction<string>) => {
       delete state[action.payload];

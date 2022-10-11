@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeName, toggleProfile } from "../store/profile/slice";
+import { changeName, toggleProfile } from "../../store/profile/slice";
 import TextField from '@mui/material/TextField';
 import MuiButton from '@mui/material/Button';
-import { selectName, selectVisible } from "../store/profile/selectors";
+import { selectName, selectVisible } from "../../store/profile/selectors";
 
 
 export const Profile: FC = () => {
