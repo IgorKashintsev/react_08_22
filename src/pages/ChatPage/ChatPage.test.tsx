@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { ChatPage } from "./ChatPage";
 import { Provider } from "react-redux";
-import { store } from "../../src/store";
+import { store } from "../../store";
 import { BrowserRouter } from "react-router-dom";
 
 describe('ChatPage', () => {
