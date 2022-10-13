@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 import { addMessageWithReply } from '../../store/messages/slice';
 import { ThunkDispatch } from 'redux-thunk';
 import { StoreState } from '../../store';
+import { push, ref } from 'firebase/database';
+import { db } from '../../services/firebase';
 
 export const Form: FC = memo(() => {
   const clearInput = () => {
@@ -27,15 +29,20 @@ export const Form: FC = memo(() => {
   const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if(chatId) {
-      dispatch(
-        addMessageWithReply({
-          chatName: chatId,
-          message: {
-            author: newMessage.author,
-            text: newMessage.text,
-          },
-        })
-      );
+      // dispatch(
+      //   addMessageWithReply({
+      //     chatName: chatId,
+      //     message: {
+      //       author: newMessage.author,
+      //       text: newMessage.text,
+      //     },
+      //   })
+      // );
+
+      push(ref(db, `messages/${chatId}/messages`), {
+        author: newMessage.author,
+        text: newMessage.text,
+      })
     }
     setMessage(clearInput());
   };
