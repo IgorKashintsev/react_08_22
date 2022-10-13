@@ -10,26 +10,28 @@ import {
   REGISTER,
  } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import { articlesReducer } from './articles/slice';
 import { messagesReducer } from "./messages/slice";
 import { profileReducer } from "./profile/slice";
 
-const persistConfig = {
-  key: 'root',
-  storage,
-  blacklist: [],
-};
+// const persistConfig = {
+//   key: 'root',
+//   storage,
+//   blacklist: ['articles', 'profile'],
+// };
 
 const rootReducer = combineReducers({
   profile: profileReducer,
   messages: messagesReducer,
+  articles: articlesReducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+// const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export type StoreState = ReturnType<typeof rootReducer>;
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {
       ignoredActions: [
@@ -45,4 +47,4 @@ export const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
 });
 
-export const persistor = persistStore(store);
+// export const persistor = persistStore(store);
